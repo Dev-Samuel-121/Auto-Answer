@@ -10,3 +10,4 @@
     | 6. Responder (Simular click do mouse na alternativa)                                         | Selenium                | Simula cliques humanos nos elementos de resposta, como botões ou checkboxes.                          |
     
 """
+
