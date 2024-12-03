@@ -14,9 +14,9 @@ PASSOS QUE O PROGRAMA VAI FAZER:
 from Assets.sons import sucess, error, reset
 from Assets.screenshot import screenshot
 from Assets.tratador_imagem import digitalizador
+import os
 
 try:
-    import os
     reset(3)
     screenshot(os.path.join(str(os.getcwd()),str("Screenshot")))
     sucess()
