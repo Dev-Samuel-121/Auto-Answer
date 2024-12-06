@@ -27,6 +27,17 @@
 
 ---
 
+## PERGUNTA - Lacunas
+
+### HTML
+```html
+
+```
+
+<br>
+
+---
+
 <br><br>
 
 ## PERGUNTA - draggable
@@ -42,6 +53,19 @@
 
 <br><br>
 
+## PERGUNTA - Select
+
+### HTML
+```html
+
+```
+
+<br>
+
+---
+
+<br><br>
+
 ## PERGUNTA - textarea
 
 ### HTML
@@ -49,6 +73,19 @@
 <div class="css-odg2wy"><form action="" method="post" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="none" class="css-0"><input type="text" name="hidden" autocorrect="off" spellcheck="false" autocomplete="false" autocapitalize="none" class="css-0" style="display: none;"><div class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-feqhe6"><label class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard MuiFormLabel-colorPrimary MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-standard css-1h1avmt" data-shrink="false" for=":r14:" id=":r14:-label">Resposta</label><div class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-multiline css-1104ogz"><textarea aria-invalid="false" id=":r14:" class="MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline css-13pivat" style="height: 23px; overflow: hidden;"></textarea><textarea aria-hidden="true" class="MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline css-13pivat" readonly="" tabindex="-1" style="visibility: hidden; position: absolute; overflow: hidden; height: 0px; top: 0px; left: 0px; transform: translateZ(0px); padding-top: 0px; padding-bottom: 0px; width: 660px;"></textarea></div></div></form></div>
 ```
 
+
+<br>
+
+---
+
+<br><br>
+
+## PERGUNTA - RIGHT - WRONG
+
+### HTML
+```html
+<div class="MuiBox-root css-j7qwjs"><div class="ql-editor MuiBox-root css-kmkory"><p>A) O sistema tem duas incógnitas e apenas uma equação.</p></div><div class="MuiFormGroup-root MuiFormGroup-row MuiRadioGroup-root MuiRadioGroup-row css-1sv5mar" role="radiogroup"><label class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-1jaw3da"><span class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-sizeSmall PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-sizeSmall MuiRadio-root MuiRadio-colorPrimary MuiRadio-sizeSmall css-1i0p8mt"><input class="PrivateSwitchBase-input css-1m9pwf3" name="DEPudYTz" type="radio" value="true"><span class="css-hyxlzm"><svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-cpa9t9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="RadioButtonUncheckedIcon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path></svg><svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-1exsolk" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="RadioButtonCheckedIcon"><path d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"></path></svg></span><span class="MuiTouchRipple-root css-w0pj6f"></span></span><span class="MuiTypography-root MuiTypography-body1 MuiFormControlLabel-label css-1tnm47n">Certo</span></label><label class="MuiFormControlLabel-root MuiFormControlLabel-labelPlacementEnd css-1jaw3da"><span class="MuiButtonBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-sizeSmall PrivateSwitchBase-root MuiRadio-root MuiRadio-colorPrimary MuiRadio-sizeSmall MuiRadio-root MuiRadio-colorPrimary MuiRadio-sizeSmall css-1i0p8mt"><input class="PrivateSwitchBase-input css-1m9pwf3" name="DEPudYTz" type="radio" value="false"><span class="css-hyxlzm"><svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-cpa9t9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="RadioButtonUncheckedIcon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path></svg><svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-1exsolk" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="RadioButtonCheckedIcon"><path d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"></path></svg></span><span class="MuiTouchRipple-root css-w0pj6f"></span></span><span class="MuiTypography-root MuiTypography-body1 MuiFormControlLabel-label css-1tnm47n">Errado</span></label></div><hr class="MuiDivider-root MuiDivider-fullWidth css-1cqtk8h"></div>
+```
 
 <br>
 
