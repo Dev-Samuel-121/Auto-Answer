@@ -50,7 +50,7 @@ def rolar_ate_ultimo_item(page, seletor_atividades):
 
 
 def contar_atividades_pendentes(page, seletor_atividades):
-    """Conta as atividades pendentes na página."""
+    """Conta as atividades pendentes na página e retorna o total de atividades."""
     atividades = page.locator(seletor_atividades)
     atividades_iniciais = atividades.count()
     print(f"Atividades iniciais encontradas: {atividades_iniciais}")
@@ -80,6 +80,63 @@ def ir_para_aba_expiradas(page):
     print("Navegando para a aba 'Expiradas'.")
 
 
+def validar_atividade_realizavel(page, seletor_botao_realizar):
+    """Validar atividade"""
+    botao_realizar = page.locator(seletor_botao_realizar)
+    
+    if botao_realizar.locator('span.css-1l6c7y9').count() > 0:
+        print("A atividade NÃO pode ser realizada (Botão com span).")
+        return False
+    
+    elif botao_realizar.inner_text() != "Realizar":
+        print("A atividade NÃO pode ser realizada (Texto diferente de 'Realizar').")
+        return False
+    
+    print("A atividade PODE ser realizada.")
+    return True
+
+
+def fazer_atividade(page, seletor_botao_realizar):
+    """Fazer Atividade"""
+    page.locator(seletor_botao_realizar).click()
+    print("Atividade realizada!")
+
+def clicar_atividade(page, seletor_atividade):
+    """Clica na atividade"""
+    
+    atividade_btn = page.locator(seletor_atividade)
+    
+    atividade_btn.scroll_into_view_if_needed()
+    
+    atividade_btn.wait_for(state="visible")
+    
+    atividade_btn.click()
+    print("Atividade clicada.")
+
+def buscar_atividade_realizavel(page, seletor_atividade, seletor_botao_realizar):
+    """Busca e realiza atividades que podem ser feitas."""
+    for i in range(1, contar_atividades_pendentes(page, seletor_atividade) + 1):
+        seletor_atividade_atual = f":nth-match({seletor_atividade}, {i})"
+        clicar_atividade(page, seletor_atividade_atual)
+
+        # Espera até o botão de 'Realizar' aparecer
+        page.wait_for_selector(seletor_botao_realizar)
+
+        # Verifica se a atividade pode ser realizada
+        if validar_atividade_realizavel(page, seletor_botao_realizar):
+            fazer_atividade(page, seletor_botao_realizar)
+        else:
+            print(f"Atividade {i} não pode ser realizada, fechando modal...")
+            fechar_modal(page, seletor_atividade_atual)
+
+def fechar_modal(page, seletor_atividade):
+    """Fecha o modal de atividade quando não for possível realizá-la."""
+    page.locator(seletor_atividade).click()
+    page.wait_for_timeout(500)
+
+
+""" RUN """
+
 def run(ra, dg, uf, ps):
     """Função principal para executar o fluxo do bot."""
     with sync_playwright() as p:
@@ -93,20 +150,50 @@ def run(ra, dg, uf, ps):
         
         seletor_tabela = 'table.MuiTable-root.css-1rb4ifj'
         seletor_atividades = 'button.css-k9aczr'
+        seletor_botao_realizar = 'button.css-1hmr1hq'
         
         if verificar_elemento_existe(page, seletor_tabela):
             print("Existem lições para realizar.")
             atividades_pendentes = contar_atividades_pendentes(page, seletor_atividades)
             print(f"Há {atividades_pendentes} atividades pendentes para realizar na aba 'A fazer'.")
+            
+            for i in range(1, atividades_pendentes + 1):
+                seletor_atividade = f":nth-match({seletor_atividades}, {i})"
+                
+                clicar_atividade(page, seletor_atividade)
+                
+                page.wait_for_selector(seletor_botao_realizar)
+                
+                if validar_atividade_realizavel(page, seletor_botao_realizar):
+                    fazer_atividade(page, seletor_botao_realizar)
+                else:
+                    print("Atividade não pode ser realizada. Fechando o modal...")
+                    page.locator(seletor_atividade).click()
+                    page.wait_for_timeout(500)
         else:
             print("Não há lições na aba 'A fazer'. Navegando para a aba 'Expiradas'.")
             ir_para_aba_expiradas(page)
             print("Verificando novamente na aba 'Expiradas'...")
             page.wait_for_selector(seletor_tabela)
+            
             if verificar_elemento_existe(page, seletor_tabela):
                 print("Existem lições na aba 'Expiradas'.")
                 atividades_pendentes = contar_atividades_pendentes(page, seletor_atividades)
                 print(f"Há {atividades_pendentes} atividades pendentes para realizar na aba 'Expiradas'.")
+                
+                for i in range(1, atividades_pendentes + 1):
+                    seletor_atividade = f":nth-match({seletor_atividades}, {i})"
+                    
+                    clicar_atividade(page, seletor_atividade)
+                    
+                    page.wait_for_selector(seletor_botao_realizar)
+                    
+                    if validar_atividade_realizavel(page, seletor_botao_realizar):
+                        fazer_atividade(page, seletor_botao_realizar)
+                    else:
+                        print("Atividade não pode ser realizada. Fechando o modal...")
+                        page.locator(seletor_atividade).click()
+                        page.wait_for_timeout(500)
             else:
                 print("Não há lições na aba 'Expiradas'.")
         
@@ -150,5 +237,35 @@ def realizar_atividade(botao_atividade):
     # Clicar no botão para realizar a atividade
     clicar_elemento(botao_atividade)
 
+============================================
+
+4. Função: Realizar Atividade
+Essa função executa a ação de clicar no botão para realizar a atividade e subtrai 1 da variável Atividades, que mantém o número de atividades pendentes.
+
+Fluxo:
+Clicar no botão para realizar a atividade:
+
+Ação: Clicar no botão identificado como btn.css-1hmr1hq.
+Subtrair 1 da quantidade de atividades:
+
+Ação: Atualizar a variável Atividades (diminuir em 1).
+Resultado: Reduzir a quantidade de atividades pendentes.
+
+
+5. Função: Loop Principal
+Este é o loop que continuará executando as funções acima até que todas as atividades tenham sido feitas ou até que não existam mais atividades pendentes.
+
+Fluxo:
+Iniciar o loop enquanto houver atividades:
+Condição: Atividades > 0
+Isso significa que o loop continuará enquanto ainda houver atividades pendentes.
+Dentro do loop, realizar as seguintes etapas:
+Verificar a aba (se está vazia ou não).
+Contar as atividades pendentes (quantidade de botões button.css-k9aczr).
+Para cada atividade:
+Validar se a atividade pode ser realizada (usando a função de validação).
+Se a atividade for válida, realizar a atividade e subtrair 1 das atividades pendentes.
+Se a atividade não for válida, passar para a próxima.
+    
 """
     

@@ -46,12 +46,10 @@ def run():
         https://chatgpt.com/c/675351ca-e478-800a-9871-8b626af06d54
         * Objetivo dessa função:
             TODO Verificar se há lição na aba "A fazer"                     ✔
-            TODO Verificar se há lição na aba "Expiradas"                   ✔ ✖
-            TODO Verificar quantas lições tem para fazer na Aba atual       ✔ ✖
-            TODO Validar se dá para fazer a lição ou não                    ✔ ✖
+            TODO Verificar se há lição na aba "Expiradas"                   ✔
+            TODO Verificar quantas lições tem para fazer na Aba atual       ✔
+            TODO Validar se dá para fazer a lição ou não                    ✔
             TODO Fazer atividade                                            ✔ ✖
-
-        * ASDFASDFASDÇLK
 
         FACA {
             SE (EXISTI a div.css-1iovhr3) { ## OU SEJA, significa que não há nada apenas um SVG para mostrar que não há nada
