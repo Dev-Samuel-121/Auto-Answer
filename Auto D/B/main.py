@@ -1,63 +1,87 @@
 from playwright.sync_api import sync_playwright
 
+
 def login_estudante(page, ra, dg, uf, ps):
     """Realiza o login com as credenciais fornecidas."""
-    acessoEstudante = page.locator('div#access-student')
-    acessoEstudante.click()
+    page.locator('div#access-student').click()
+    page.locator('input#ra-student').fill(ra)
+    page.locator('input#digit-student').fill(dg)
+    page.locator('select#uf-student').select_option(value=uf)
+    page.locator('input#password-student').fill(ps)
+    page.locator('input#btn-login-student').click()
 
-    raa = page.locator('input#ra-student')
-    raa.fill(ra)
-    
-    dgg = page.locator('input#digit-student')
-    dgg.fill(dg)
-    
-    uff = page.locator('select#uf-student')
-    uff.select_option(value=uf)
-    
-    pss = page.locator('input#password-student')
-    pss.fill(ps)
-
-    entrar = page.locator('input#btn-login-student')
-    entrar.click()
 
 def acessar_sala(page):
     """Acessa a sala de aula após o login."""
-    sala = page.locator(
-        ':nth-match(div#lproom_r783fda450260e0cbe-l.lproom_r783fda450260e0cbe-l.frm.w100.p10.pt, 4)'
-    )
+    sala = page.locator(':nth-match(div#lproom_r783fda450260e0cbe-l.lproom_r783fda450260e0cbe-l.frm.w100.p10.pt, 4)')
     sala.click()
+
 
 def acessar_atividades(page):
     """Acessa a página de atividades."""
-    page.goto("https://cmsp.ip.tv/mobile/tms?auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJza2V5IjoiYXV0aF90b2tlbjplZHVzcDpkYW5pZWxvbGl2ZTEwMDY1OTE4My1zcCIsIm5pY2siOiJkYW5pZWxvbGl2ZTEwMDY1OTE4My1zcCIsInJvbGUiOiIwMDA2IiwicmVhbG0iOiJlZHVzcCIsImlhdCI6MTczMzQ5MjQzNywiYXVkIjoid2ViY2xpZW50In0.Cb9gBJa-zktTjbfZRt3DiXq6l0u089-4Y_Bnq5JNMJg&room=r783fda450260e0cbe-l")
-    todasAsAtividades = page.locator(':nth-match(div.MuiBox-root.css-p0pzb2, 2)')
-    todasAsAtividades.click()
+    url_atividades = "https://cmsp.ip.tv/mobile/tms?auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJza2V5IjoiYXV0aF90b2tlbjplZHVzcDpkYW5pZWxvbGl2ZTEwMDY1OTE4My1zcCIsIm5pY2siOiJkYW5pZWxvbGl2ZTEwMDY1OTE4My1zcCIsInJvbGUiOiIwMDA2IiwicmVhbG0iOiJlZHVzcCIsImlhdCI6MTczMzUxOTYwOSwiYXVkIjoid2ViY2xpZW50In0.oqO-eR0IwyvdISxDKoKaGCsQI4dXw-3S9tUblegiV4g&room=r783fda450260e0cbe-l"
+    page.goto(url_atividades)
+    page.locator(':nth-match(div.MuiBox-root.css-p0pzb2, 2)').click()
+
 
 def verificar_elemento_existe(page, seletor):
-    """Verifica a existencia de um elemento"""
+    """Verifica a existência de um elemento na página."""
     elemento = page.locator(seletor)
-    
-    # Verificar se o elemento existe
     if elemento.count() > 0:
-        print("Tem lição.")
+        print("Elemento encontrado.")
         return True
     else:
-        print("Não tem lição.")
+        print("Elemento não encontrado.")
         return False
 
+
+def rolar_ate_ultimo_item(page, seletor_atividades):
+    """Rola até o último item da página de atividades."""
+    atividades = page.locator(seletor_atividades)
+    total_atividades = atividades.count()
+
+    if total_atividades > 0:
+        print(f"Total de atividades encontradas: {total_atividades}")
+        ultimo_item = page.locator(f'{seletor_atividades}:nth-match({seletor_atividades}, {total_atividades})')
+        ultimo_item.scroll_into_view_if_needed()
+        print(f"Rolando até o último item (atividade {total_atividades}).")
+    else:
+        print("Não há atividades para rolar.")
+
+
+def contar_atividades_pendentes(page, seletor_atividades):
+    """Conta as atividades pendentes na página."""
+    atividades = page.locator(seletor_atividades)
+    atividades_iniciais = atividades.count()
+    print(f"Atividades iniciais encontradas: {atividades_iniciais}")
+
+    rolagem = 1
+    while rolagem > 0:
+        rolar_ate_ultimo_item(page, seletor_atividades)
+        page.wait_for_timeout(5000)
+
+        atividades_atualizadas = atividades.count()
+        if atividades_atualizadas > atividades_iniciais:
+            print(f"Número de atividades aumentou: {atividades_atualizadas}")
+            atividades_iniciais = atividades_atualizadas
+            rolagem += 1
+        else:
+            print("Número de atividades não aumentou, presumindo que não há mais lições.")
+            rolagem = 0
+
+    print(f"Total de atividades encontradas: {atividades_iniciais}")
+    return atividades_iniciais
+
+
 def ir_para_aba_expiradas(page):
-    """Vai para a próxima seção"""
-    trocarSecao = page.locator('div#language')
-    trocarSecao.click()
-    
-    expiradas = page.locator(':nth-match(li.css-p0z5r, 2)')
-    expiradas.click()
-    
+    """Vai para a aba 'Expiradas'."""
+    page.locator('div#language').click()
+    page.locator(':nth-match(li.css-p0z5r, 2)').click()
     print("Navegando para a aba 'Expiradas'.")
 
-"""RUN"""
 
 def run(ra, dg, uf, ps):
+    """Função principal para executar o fluxo do bot."""
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=False)
         page = browser.new_page()
@@ -66,20 +90,23 @@ def run(ra, dg, uf, ps):
         login_estudante(page, ra, dg, uf, ps)
         acessar_sala(page)
         acessar_atividades(page)
-
+        
         seletor_tabela = 'table.MuiTable-root.css-1rb4ifj'
+        seletor_atividades = 'button.css-k9aczr'
         
         if verificar_elemento_existe(page, seletor_tabela):
             print("Existem lições para realizar.")
+            atividades_pendentes = contar_atividades_pendentes(page, seletor_atividades)
+            print(f"Há {atividades_pendentes} atividades pendentes para realizar na aba 'A fazer'.")
         else:
             print("Não há lições na aba 'A fazer'. Navegando para a aba 'Expiradas'.")
             ir_para_aba_expiradas(page)
-            
             print("Verificando novamente na aba 'Expiradas'...")
             page.wait_for_selector(seletor_tabela)
-
             if verificar_elemento_existe(page, seletor_tabela):
                 print("Existem lições na aba 'Expiradas'.")
+                atividades_pendentes = contar_atividades_pendentes(page, seletor_atividades)
+                print(f"Há {atividades_pendentes} atividades pendentes para realizar na aba 'Expiradas'.")
             else:
                 print("Não há lições na aba 'Expiradas'.")
         
