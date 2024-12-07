@@ -113,26 +113,7 @@ def clicar_atividade(page, seletor_atividade):
     atividade_btn.click()
     print("Atividade clicada.")
 
-def buscar_atividade_realizavel(page, seletor_atividade, seletor_botao_realizar):
-    """Busca e realiza atividades que podem ser feitas."""
-    for i in range(1, contar_atividades_pendentes(page, seletor_atividade) + 1):
-        seletor_atividade_atual = f":nth-match({seletor_atividade}, {i})"
-        clicar_atividade(page, seletor_atividade_atual)
 
-        # Espera até o botão de 'Realizar' aparecer
-        page.wait_for_selector(seletor_botao_realizar)
-
-        # Verifica se a atividade pode ser realizada
-        if validar_atividade_realizavel(page, seletor_botao_realizar):
-            fazer_atividade(page, seletor_botao_realizar)
-        else:
-            print(f"Atividade {i} não pode ser realizada, fechando modal...")
-            fechar_modal(page, seletor_atividade_atual)
-
-def fechar_modal(page, seletor_atividade):
-    """Fecha o modal de atividade quando não for possível realizá-la."""
-    page.locator(seletor_atividade).click()
-    page.wait_for_timeout(500)
 
 
 """ RUN """
