@@ -58,7 +58,7 @@ def contar_atividades_pendentes(page, seletor_atividades):
     rolagem = 1
     while rolagem > 0:
         rolar_ate_ultimo_item(page, seletor_atividades)
-        page.wait_for_timeout(5000)
+        page.wait_for_timeout(500)
 
         atividades_atualizadas = atividades.count()
         if atividades_atualizadas > atividades_iniciais:
@@ -99,7 +99,9 @@ def validar_atividade_realizavel(page, seletor_botao_realizar):
 def fazer_atividade(page, seletor_botao_realizar):
     """Fazer Atividade"""
     page.locator(seletor_botao_realizar).click()
+    
     print("Atividade realizada!")
+
 
 def clicar_atividade(page, seletor_atividade):
     """Clica na atividade"""
@@ -114,9 +116,8 @@ def clicar_atividade(page, seletor_atividade):
     print("Atividade clicada.")
 
 
-
-
 """ RUN """
+
 
 def run(ra, dg, uf, ps):
     """Função principal para executar o fluxo do bot."""
