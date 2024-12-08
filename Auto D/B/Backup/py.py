@@ -57,38 +57,51 @@ def run():
 
                 ??? ========================================= ***** ========================================= ???
 
-                num_de_verificações = 0
-                questao_atual = 0
-                num_de_card_verificado = 0
-                # num_questao_respondido = 0 -> Uma ideia para facilitar a forma verificar se todas as questões foram selecionadas
+                !# num_de_verificações = 0 # Aqui vamos contar o número de verificações para cada card 
+                questao_atual = 0 # Identificar a questão atual e facilitar a especificação dos elementos dentro dela
+                text_atual = 0 # Identificar o texto atual e facilitar a especificação dos elementos dentro dela
+                numero_de_card_verificado = 0 # Será para ajudar 
+                numero_questao_respondido = 0
                 
                 ## DESCOBRIR QUANTAS VERIFICAÇÕES TEM QUE FAZER
-                Contar quantos div.css-xz389d tem -> A div.css-xz389d são cada card
+                numero_de_card = número de div.css-xz389d # A div.css-xz389d são cada card
 
-                FACA {
-                    SE (dentro da :nth-match('div.css-xz389d, $') EXISTI a div.css-1mi3tt8 OU EXISTI a div.ytp-cued-thumbnail-overlay OU EXISTI a div.MuiBox-root.css-1ierx79 {
-                        # Verificar se é PDF, VÍDEO ou GIF
-                        Passa para próxima div.css-xz389d
-                        num_de_card_verificado += 1
-                    } SENÃO {
-                        SE (dentro da :nth-match('div.css-xz389d, $') EXISTI div.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j) {
-                            # Verificar se é Texto
-                            Pegue todo texto das tags P dessa div
-                            Armazene todo esse conteúdo no JSON
-                            num_de_card_verificado += 1
+                FACA { # Vamos fazer tudo isso enquanto o número de numero_de_card for menor que o numero_de_card_verificado
+                    SE (dentro da :nth-match('div.css-xz389d, numero_de_card_verificado') EXISTI a div.css-1mi3tt8 OU EXISTI a div.ytp-cued-thumbnail-overlay OU EXISTI a div.MuiBox-root.css-1ierx79 { # Esse numero_de_card_verificado ajuda a saber qual é o card atual
+                        # Se existir então temos aqui tem um PDF ou VÍDEO ou GIF
+                        SE (dentro da :nth-match('div.css-xz389d, numero_de_card_verificado') EXISTI div.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j) {
+                            # Se tiver um deles vamos verificar se EXISTI div.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j o que significa que temos um breve texto sobre o assunto
+                            text_atual += 1 # Para saber em qual texto estamos
+                            numero_de_card_verificado += 1 # Para saber em qual card estamos e se já foi verificado
+                            Pega todo o texto das tags P que estão dentro do :nth-match('div.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j, text_atual')
+                            Passa para a próxima div.css-xz389d # Em outras palavras passar para o próximo card
                         } SENÃO {
-                            SE (dentro da :nth:match('div.css-xz389d, $') EXISTI div.css-nlzma4) {
-                                # Verifica o tipo de questão (Radios, Checkbox, etc)
-                                questao_atual += 1
-                                SE (dentro da :nth:match('div.MuiCard-root.css-1aksd3q, $') EXISTI span.MuiRadio-root.css-1sgsc5r) {
-                                    # Aqui o Type dele é "Radio"
-                                    Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é div.MuiCard-root.css-1aksd3q, $ # Esse $ é a questao_atual
+                            # Se não EXISTI div.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j então provavelmente aqui tem só um PDF ou VÍDEO ou GIF
+                            Passa para a próxima div.css-xz389d
+                            numero_de_card_verificado += 1 # Para saber em qual card estamos e se já foi verificado
+                        }
+                    } SENÃO {
+                        SE (dentro da :nth-match('div.css-xz389d, numero_de_card_verificado') EXISTI div.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j) {
+                            # Se não tiver nenhum PDF, VÍDEO ou GIF vamos verificar se é um card só de texto
+                            text_atual += 1 # Para saber em qual texto estamos
+                            Pegue todo texto das tags P que estão contidas na :ntch-match('div.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j, text_atual')
+                            Armazene todo esse conteúdo no JSON # Já, já vamos criar uma função JSON para armazenar as questões que estamos fazendo
+                            numero_de_card_verificado += 1
+                        } SENÃO {
+                            # Se não é um card que contem TEXTO, PDF, VÍDEO ou GIF então só pode ser uma questão
+                            SE (dentro da :nth:match('div.css-xz389d, numero_de_card_verificado') EXISTI div.css-nlzma4) {
+                                # Se tiver essa div então sabemos que é uma questão então agora verificamos o tipo de questão (Radios, Checkbox, etc)
+                                questao_atual += 1 # Adicionamos 1 a questao_atual para identificarmos em qual questão estamos
+                                SE (dentro da :nth:match('div.MuiCard-root.css-1aksd3q, questao_atual') EXISTI span.MuiRadio-root.css-1sgsc5r) {
+                                    # Se existir enão é uma questão de tipo Radios
+                                    numero_de_card_verificado += 1
+                                    Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é :nth-match('div.MuiCard-root.css-1aksd3q, $') # Esse $ é a questao_atual
                                     Armazene todo esse conteúdo no JSON
                                     Vá para a página do ChatGPT (Abra uma nova guia, Entre em https://chatgpt.com/)
                                     Pega todo o conteúdo do JSON e coloca no ChatGPT
                                     Pega a resposta do ChatGPT que vai vim em formato JSON
                                     TODO Responder # Lógica para Responder
-                                    num_de_card_verificado += 1
+                                    numero_questao_respondido += 1
                                 } SENÃO SE (dentro da :nth:match('div.MuiCard-root.css-1aksd3q, $') EXISTI span.MuiCheckbox-root.css-14bgux8) {
                                     # Aqui o Type dele é "Checkbox"
                                     Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é div.MuiCard-root.css-1aksd3q, $ # Esse $ é a questao_atual
@@ -138,7 +151,7 @@ def run():
                                 !   Pega a resposta do ChatGPT que vai vim em formato JSON
                                 TODO Responder # Lógica para Responder
                                 TODO }
-                                num_de_card_verificado += 1
+                                numero_de_card_verificado += 1
                             }
                         }
                         VERIFICAR LIÇÃO SE AS ALTERNATIVAS FOR APENAS IMAGENS
@@ -147,7 +160,7 @@ def run():
                         PEGA O JSON COM A PERGUNTA E AS ALTERNATIVAS DA $ E PASSE PARA ChatGPT PARA QUE RESOLVA E RETORNE A RESPOSTA(s)
                         PEGA AS RESPOSTAS DESSE JSON E COLOUQE NA ALTERNATIVA CORRETA
                     }
-                } ENQUANTO (num_de_card_verificado < num_de_verificações)
+                } ENQUANTO (numero_de_card < numero_de_card_verificado)
                 
                 * Adicionar forma de verificar se todas as questões foram selecionadas
                 * Adicionar forma de clicar no botão enviar
