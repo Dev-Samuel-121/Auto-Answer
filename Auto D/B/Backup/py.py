@@ -66,24 +66,24 @@ def run():
                 ## DESCOBRIR QUANTAS VERIFICAÇÕES TEM QUE FAZER
                 numero_de_card = número de div.css-xz389d # A div.css-xz389d são cada card
 
-                FACA { # Vamos fazer tudo isso enquanto o número de numero_de_card for maior que o numero_de_card_verificado
+                FACA { # Vamos fazer tudo isso enquanto o número de numero_de_card for maior que o numero_de_card_verificado ou seja ainda faltam cards para verificar
                     SE (dentro da :nth-match('div.css-xz389d, numero_de_card_verificado') EXISTI a div.css-1mi3tt8 OU EXISTI a div.ytp-cued-thumbnail-overlay OU EXISTI a div.MuiBox-root.css-1ierx79 { # Esse numero_de_card_verificado ajuda a saber qual é o card atual ou o card que estamos verificando
-                        # Se existir então temos aqui um PDF ou VÍDEO ou GIF
+                        # Se existir então temos aqui um PDF ou VÍDEO ou GIF Agora vamos verificar se tem alguma conteúdo que possa ser importante nós pegar
                         SE (dentro da :nth-match('div.css-xz389d, numero_de_card_verificado') EXISTI div.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j) {
                             # Se tiver um deles vamos verificar se EXISTI div.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j o que significa que temos um breve texto sobre o assunto
                             text_atual += 1 # Para saber para qual texto vamos
-                            numero_de_card_verificado += 1 # Para saber em qual card vamos e se já foi verificado
+                            numero_de_card_verificado += 1 # Para saber em qual card vamos e se o card atual já foi verificado
                             Pega todo o texto das tags P que estão dentro do :nth-match('div.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j, text_atual')
                             Passa para a próxima div.css-xz389d # Em outras palavras passar para o próximo card
                         } SENÃO {
                             # Se não EXISTI div.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j então provavelmente aqui tem só um PDF ou VÍDEO ou GIF
-                            numero_de_card_verificado += 1 # Para saber em qual card vamos e se já foi verificado
+                            numero_de_card_verificado += 1 # Para saber em qual card vamos e se o card atual já foi verificado
                             Passa para a próxima div.css-xz389d
                         }
                     } SENÃO {
                         SE (dentro da :nth-match('div.css-xz389d, numero_de_card_verificado') EXISTI div.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j) {
                             # Se não tiver nenhum PDF, VÍDEO ou GIF vamos verificar se é um card só de texto
-                            text_atual += 1 # Para saber em qual texto vamos
+                            text_atual += 1 # Para saber para qual texto vamos
                             numero_de_card_verificado += 1
                             Pegue todo texto das tags P que estão dentro da :ntch-match('div.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j, text_atual')
                             Armazene todo esse conteúdo no JSON # Já, já vamos criar uma função JSON para armazenar as questões e textos que estamos fazendo
@@ -91,12 +91,12 @@ def run():
                             # Se não é um card que contem TEXTO, PDF, VÍDEO ou GIF então só pode ser uma questão
                             SE (dentro da :nth:match('div.css-xz389d, numero_de_card_verificado') EXISTI div.css-nlzma4) {
                                 # Se tiver essa div então sabemos que é uma questão então agora verificamos o tipo de questão (Radios, Checkbox, etc)
-                                questao_atual += 1 # Adicionamos 1 a questao_atual para identificarmos em qual questão vamos
+                                questao_atual += 1 # Adicionamos 1 a questao_atual para identificarmos para qual questão vamos
                                 # Sistema/Função para identificar tipo de pergunta
-                                SE (dentro da :nth-match('div.MuiCard-root.css-1aksd3q, questao_atual') EXISTI span.MuiRadio-root.css-1sgsc5r) {
+                                *SE (dentro da :nth-match('div.MuiCard-root.css-xz389d, questao_atual') EXISTI span.MuiRadio-root.css-1sgsc5r) {
                                     # Se existir então é uma questão de tipo Radios
                                     numero_de_card_verificado += 1
-                                    Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é :nth-match('div.MuiCard-root.css-1aksd3q, questao_atual') # Todos esses P é o Título da questão e as alternativas
+                                    Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é :nth-match('div.MuiCard-root.css-xz389d, questao_atual') # Todos esses P é o Título da questão e as alternativas
                                     Armazene todo esse conteúdo no JSON # Armazenar todo esse conteúdo em um arquivo JSON para podemos transferir esses dados da questão atual para a página do ChatGPT
                                     # Sistema/Função para procurar respostas
                                         Vá para a página do ChatGPT (Abra uma nova guia, Entre em https://chatgpt.com/)
@@ -104,59 +104,78 @@ def run():
                                         Pega a resposta do ChatGPT que vai vim em formato JSON e armazene em outro arquivo JSON
                                     # Sistema/Função para responder respostas do tipo Radios
                                         Pegue a resposta do arquivo JSON
-                                        Procure dentre as :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro do pai :nth-match('div.MuiCard-root.css-1aksd3q, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Essa especificação 'div.MuiRadioGroup-root div.css-t1yck' é o conjunto de alternativas. Aqui a ideia é é procurar dentro do card no conjunto de alternativas a alternativa que tem o valor igual ao do arquivo JSON com a resposta do GPT
-                                        e precione input.PrivateSwitchBase-input.css-1m9pwf3 que está na :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro da :nth-match('div.MuiCard-root.css-1aksd3q, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Agora é apenas precionar o Input especificado
+                                        Procure dentre as :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Essa especificação 'div.MuiRadioGroup-root div.css-t1yck' é o conjunto de alternativas. Aqui a ideia é procurar dentro do card atual no conjunto de alternativas a alternativa que tem o valor igual ao do arquivo JSON com a resposta do ChatGPT
+                                        Click no input.PrivateSwitchBase-input.css-1m9pwf3 que está na :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro da :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Agora é apenas clicar no Input da alternativa
                                     numero_questao_respondido += 1 # Vamos adicionar mais 1 ao número de questões respondidas
-                                } SENÃO SE (dentro da :nth:match('div.MuiCard-root.css-1aksd3q, $') EXISTI span.MuiCheckbox-root.css-14bgux8) {
-                                    # Aqui o Type dele é "Checkbox"
-                                    Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é div.MuiCard-root.css-1aksd3q, $ # Esse $ é a questao_atual
-                                    Armazene todo esse conteúdo no JSON
-                                    Vá para a página do ChatGPT (Abra uma nova guia, Entre em https://chatgpt.com/)
-                                    Pega todo o conteúdo do JSON e coloca no ChatGPT
-                                    Pega a resposta do ChatGPT que vai vim em formato JSON
-                                    TODO Responder # Lógica para Responder
-                                TODO } SENÃO SE (dentro da :nth:match('div.MuiCard-root.css-1aksd3q, $') EXISTI span.MuiCheckbox-root.css-14bgux8) {
-                                !   # Aqui o Type dele é "Dragable"
-                                !   Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é div.MuiCard-root.css-1aksd3q, $ # Esse $ é a questao_atual
-                                !   Armazene todo esse conteúdo no JSON
-                                !   Vá para a página do ChatGPT (Abra uma nova guia, Entre em https://chatgpt.com/)
-                                !   Pega todo o conteúdo do JSON e coloca no ChatGPT
-                                !   Pega a resposta do ChatGPT que vai vim em formato JSON
+                                    Para e passa para a próxima pergunta
+                                *} SENÃO SE (dentro da :nth:match('div.MuiCard-root.css-xz389d, $') EXISTI span.MuiCheckbox-root.css-14bgux8) {
+                                    # Se existir então é uma questão de tipo Checkbox
+                                    numero_de_card_verificado += 1
+                                    Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é :nth-match('div.MuiCard-root.css-xz389d, questao_atual') # Todos esses P é o Título da questão e as alternativas
+                                    Armazene todo esse conteúdo no JSON # Armazenar todo esse conteúdo em um arquivo JSON para podemos transferir esses dados da questão atual para a página do ChatGPT
+                                    # Sistema/Função para procurar respostas
+                                        Vá para a página do ChatGPT (Abra uma nova guia, Entre em https://chatgpt.com/)
+                                        Pega todo o conteúdo do JSON e coloca no ChatGPT
+                                        Pega a resposta do ChatGPT que vai vim em formato JSON e armazene em outro arquivo JSON
+                                    # Sistema/Função para responder respostas do tipo Radios
+                                        Pegue a resposta do arquivo JSON
+                                        Procure dentre as :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Essa especificação 'div.MuiRadioGroup-root div.css-t1yck' é o conjunto de alternativas. Aqui a ideia é procurar dentro do card atual no conjunto de alternativas a alternativa que tem o valor igual ao do arquivo JSON com a resposta do ChatGPT
+                                        Click no input.PrivateSwitchBase-input.css-1m9pwf3 que está na :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro da :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Agora é apenas clicar no Input da alternativa
+                                    numero_questao_respondido += 1 # Vamos adicionar mais 1 ao número de questões respondidas
+                                    Para e passa para a próxima pergunta
+                                TODO } SENÃO SE (dentro da :nth:match('div.MuiCard-root.css-xz389d, $') EXISTI span.MuiCheckbox-root.css-14bgux8) {
+                                TODO    # Se existir então é uma questão de tipo DRAGABLE
+                                TODO    numero_de_card_verificado += 1
+                                TODO    Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é :nth-match('div.MuiCard-root.css-xz389d, questao_atual') # Todos esses P é o Título da questão e as alternativas
+                                TODO    Armazene todo esse conteúdo no JSON # Armazenar todo esse conteúdo em um arquivo JSON para podemos transferir esses dados da questão atual para a página do ChatGPT
+                                TODO    # Sistema/Função para procurar respostas
+                                TODO        Vá para a página do ChatGPT (Abra uma nova guia, Entre em https://chatgpt.com/)
+                                TODO        Pega todo o conteúdo do JSON e coloca no ChatGPT
+                                TODO        Pega a resposta do ChatGPT que vai vim em formato JSON e armazene em outro arquivo JSON
+                                TODO    # Sistema/Função para responder respostas do tipo Radios
+                                TODO        Pegue a resposta do arquivo JSON
+                                TODO        Procure dentre as :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Essa especificação 'div.MuiRadioGroup-root div.css-t1yck' é o conjunto de alternativas. Aqui a ideia é procurar dentro do card atual no conjunto de alternativas a alternativa que tem o valor igual ao do arquivo JSON com a resposta do ChatGPT
+                                TODO        Click no input.PrivateSwitchBase-input.css-1m9pwf3 que está na :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro da :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Agora é apenas clicar no Input da alternativa
+                                TODO    numero_questao_respondido += 1 # Vamos adicionar mais 1 ao número de questões respondidas
                                 TODO Responder # Lógica para Responder
-                                TODO }SENÃO SE (dentro da :nth:match('div.MuiCard-root.css-1aksd3q, $') EXISTI span.MuiCheckbox-root.css-14bgux8) {
-                                !   # Aqui o Type dele é "Right Wrong"
-                                !   Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é div.MuiCard-root.css-1aksd3q, $ # Esse $ é a questao_atual
-                                !   Armazene todo esse conteúdo no JSON
-                                !   Vá para a página do ChatGPT (Abra uma nova guia, Entre em https://chatgpt.com/)
-                                !   Pega todo o conteúdo do JSON e coloca no ChatGPT
-                                !   Pega a resposta do ChatGPT que vai vim em formato JSON
-                                TODO Responder # Lógica para Responder
-                                TODO }SENÃO SE (dentro da :nth:match('div.MuiCard-root.css-1aksd3q, $') EXISTI span.MuiCheckbox-root.css-14bgux8) {
+                                TODO }SENÃO SE (dentro da :nth:match('div.MuiCard-root.css-xz389d, $') EXISTI span.MuiCheckbox-root.css-14bgux8) {
                                 !   # Aqui o Type dele é "Select"
-                                !   Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é div.MuiCard-root.css-1aksd3q, $ # Esse $ é a questao_atual
+                                !   Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é div.MuiCard-root.css-xz389d, $ # Esse $ é a questao_atual
                                 !   Armazene todo esse conteúdo no JSON
                                 !   Vá para a página do ChatGPT (Abra uma nova guia, Entre em https://chatgpt.com/)
                                 !   Pega todo o conteúdo do JSON e coloca no ChatGPT
                                 !   Pega a resposta do ChatGPT que vai vim em formato JSON
                                 TODO Responder # Lógica para Responder
-                                TODO }SENÃO SE (dentro da :nth:match('div.MuiCard-root.css-1aksd3q, $') EXISTI span.MuiCheckbox-root.css-14bgux8) {
-                                !   # Aqui o Type dele é "Textarea"
-                                !   Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é div.MuiCard-root.css-1aksd3q, $ # Esse $ é a questao_atual
-                                !   Armazene todo esse conteúdo no JSON
-                                !   Vá para a página do ChatGPT (Abra uma nova guia, Entre em https://chatgpt.com/)
-                                !   Pega todo o conteúdo do JSON e coloca no ChatGPT
-                                !   Pega a resposta do ChatGPT que vai vim em formato JSON
-                                TODO Responder # Lógica para Responder
-                                TODO } SENÃO SE (dentro da :nth:match('div.MuiCard-root.css-1aksd3q, $') EXISTI span.MuiCheckbox-root.css-14bgux8) {
-                                !   # Aqui o Type dele é "Order"
-                                !   Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é div.MuiCard-root.css-1aksd3q, $ # Esse $ é a questao_atual
-                                !   Armazene todo esse conteúdo no JSON
-                                !   Vá para a página do ChatGPT (Abra uma nova guia, Entre em https://chatgpt.com/)
-                                !   Pega todo o conteúdo do JSON e coloca no ChatGPT
-                                !   Pega a resposta do ChatGPT que vai vim em formato JSON
-                                TODO Responder # Lógica para Responder
-                                TODO }
-                                numero_de_card_verificado += 1
+                                } SENÃO SE (dentro da :nth-match('div.MuiCard-root.css-xz389d, questao_atual') EXISTI span.MuiRadio-root.css-1sgsc5r) {
+                                    # Se existir então é uma questão de tipo Select
+                                    numero_de_card_verificado += 1
+                                    Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é :nth-match('div.MuiCard-root.css-xz389d, questao_atual') # Todos esses P é o Título da questão e as alternativas
+                                    Armazene todo esse conteúdo no JSON # Armazenar todo esse conteúdo em um arquivo JSON para podemos transferir esses dados da questão atual para a página do ChatGPT
+                                    # Sistema/Função para procurar respostas
+                                        Vá para a página do ChatGPT (Abra uma nova guia, Entre em https://chatgpt.com/)
+                                        Pega todo o conteúdo do JSON e coloca no ChatGPT
+                                        Pega a resposta do ChatGPT que vai vim em formato JSON e armazene em outro arquivo JSON
+                                    # Sistema/Função para responder respostas do tipo Radios
+                                        Pegue a resposta do arquivo JSON
+                                        Procure dentre as :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Essa especificação 'div.MuiRadioGroup-root div.css-t1yck' é o conjunto de alternativas. Aqui a ideia é procurar dentro do card atual no conjunto de alternativas a alternativa que tem o valor igual ao do arquivo JSON com a resposta do ChatGPT
+                                        Click no input.PrivateSwitchBase-input.css-1m9pwf3 que está na :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro da :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Agora é apenas clicar no Input da alternativa
+                                    numero_questao_respondido += 1 # Vamos adicionar mais 1 ao número de questões respondidas
+                                    Para e passa para a próxima pergunta
+                                *} SENÃO SE (dentro da :nth:match('div.MuiCard-root.css-xz389d, $') EXISTI div.MuiTextField-root.css-feqhe6) {
+                                    # Se existir então é uma questão de tipo Textarea
+                                    numero_de_card_verificado += 1
+                                    Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é :nth-match('div.MuiCard-root.css-xz389d, questao_atual') # Todos esses P são o Título da questão
+                                    Armazene todo esse conteúdo no JSON # Armazenar todo esse conteúdo em um arquivo JSON para podemos transferir esses dados da questão atual para a página do ChatGPT
+                                    # Sistema/Função para procurar respostas
+                                        Vá para a página do ChatGPT (Abra uma nova guia, Entre em https://chatgpt.com/)
+                                        Pega todo o conteúdo do JSON e coloca no ChatGPT
+                                        Pega a resposta do ChatGPT que vai vim em formato JSON e armazene em outro arquivo JSON
+                                    # Sistema/Função para responder respostas do tipo Radios
+                                        Pegue a resposta do arquivo JSON
+                                        Click no textarea.MuiInputBase-inputMultiline.css-13pivat que está na :nth-match('div.MuiInput-root, questao_atual') dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') e depois dar um .fill() com o valor do JSON # Agora é apenas clicar no Input da alternativa
+                                    numero_questao_respondido += 1
+                                    Para e passa para a próxima pergunta
+                                }
                             }
                         }
                         VERIFICAR LIÇÃO SE AS ALTERNATIVAS FOR APENAS IMAGENS
@@ -171,6 +190,92 @@ def run():
                 * Adicionar forma de clicar no botão enviar
                 * Adicionar forma de verificar quantas você acertou
                 * Adicionar forma de verificar quantas você errou
+                
+                * =========================================== ***** =========================================== *
+
+                from playwright.sync_api import sync_playwright
+                import json
+
+                # Função para armazenar dados em um arquivo JSON
+                def armazenar_json(arquivo, dados):
+                    with open(arquivo, 'w') as f:
+                        json.dump(dados, f)
+
+                # Função para interagir com o site e resolver o formulário
+                def automatizar_formulario(page):
+                    questao_atual = 0
+                    text_atual = 0
+                    numero_de_card_verificado = 0
+                    numero_questao_respondido = 0
+
+                    # Descobrir quantos cards existem
+                    numero_de_card = len(page.query_selector_all("div.css-xz389d"))
+
+                    # Iniciar o loop para processar os cards
+                    while numero_de_card > numero_de_card_verificado:
+                        card_atual = page.query_selector(f"div.css-xz389d:nth-of-type({numero_de_card_verificado + 1})")
+
+                        if card_atual:
+                            # Verificar se o card contém vídeo, PDF ou GIF
+                            if card_atual.query_selector("div.css-1mi3tt8") or card_atual.query_selector("div.ytp-cued-thumbnail-overlay"):
+                                # Caso o card tenha conteúdo multimídia (PDF, Vídeo ou GIF)
+                                if card_atual.query_selector("div.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j"):
+                                    # Se tiver texto explicativo
+                                    text_atual += 1  # Incrementa apenas quando o texto for encontrado
+                                    numero_de_card_verificado += 1  # Incrementa somente quando o card for processado completamente
+                                    # Extrair texto dos parágrafos e armazenar
+                                    textos = card_atual.query_selector_all("p")
+                                    conteudo_texto = [texto.inner_text() for texto in textos]
+                                    armazenar_json("textos.json", conteudo_texto)
+                                else:
+                                    numero_de_card_verificado += 1  # Incrementa apenas quando o card multimídia for processado
+                            else:
+                                # Se o card não tem conteúdo multimídia, verificar se é um card de texto
+                                if card_atual.query_selector("div.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j"):
+                                    text_atual += 1  # Incrementa apenas quando o card contém texto
+                                    numero_de_card_verificado += 1
+                                    # Extrair texto dos parágrafos e armazenar
+                                    textos = card_atual.query_selector_all("p")
+                                    conteudo_texto = [texto.inner_text() for texto in textos]
+                                    armazenar_json("textos.json", conteudo_texto)
+                                else:
+                                    # Caso o card seja uma questão (ex: múltipla escolha)
+                                    if card_atual.query_selector("div.css-nlzma4"):
+                                        questao_atual += 1  # Incrementa somente quando uma nova questão é encontrada
+                                        numero_de_card_verificado += 1
+                                        alternativas = card_atual.query_selector_all("div.MuiBox-root.css-kmkory p")
+                                        alternativas_texto = [alt.inner_text() for alt in alternativas]
+                                        armazenar_json("alternativas.json", alternativas_texto)
+                                        
+                                        # Simulação de busca pela resposta no ChatGPT (substitua com uma chamada real)
+                                        resposta_chatgpt = {"resposta": "Alternativa A"}  # Exemplo de resposta, substitua conforme necessário
+                                        
+                                        # Selecionar a alternativa correta com base na resposta do ChatGPT
+                                        alternativa_correta = card_atual.query_selector(f"div.MuiRadioGroup-root div.css-t1yck input[value='{resposta_chatgpt['resposta']}']")
+                                        if alternativa_correta:
+                                            alternativa_correta.click()
+                                            numero_questao_respondido += 1  # Incrementa quando uma questão é respondida
+                                        numero_de_card_verificado += 1
+
+                                # Função principal que inicia a automação
+                                def run():
+                                    with sync_playwright() as p:
+                                        browser = p.chromium.launch(headless=False)  # Você pode mudar para headless=True se quiser rodar sem interface gráfica
+                                        page = browser.new_page()
+
+                                        # Acessar o site onde o formulário está localizado
+                                        page.goto("URL_DO_SEU_SITE")  # Substitua pelo URL do seu site com o formulário
+
+                                        # Chama a função que faz a automação do formulário
+                                        automatizar_formulario(page)
+
+                                        # Fechar o navegador após o processo
+                                        browser.close()
+
+                                # Chamar a função run() para iniciar a automação
+                                if __name__ == "__main__":
+                                    run()
+
         '''
             FACA {
                 SE (EXISTI a div.css-1iovhr3) { ## OU SEJA, significa que não há nada apenas um SVG para mostrar que não há nada
@@ -191,6 +296,13 @@ def run():
                 }
             } ENQUANTO(Atividades > 0) # Faça tudo isso enquanto ainda tiver atividades
         '''
+        """
+
+        """
+        
+        Chat estou desenvolvendo uma automação usando Python e a Biblioteca Play Wright, toda a lógica já foi feita, agora estamos na parte final do código, estamos desenvolvendo uma função para identificar e responder os cards
+        Chat estou desenvolvendo uma automação usando Python e a Biblioteca Play Wright a ideia é que ela responde formuláiros de uma página, o site em si é dinamico sendo gerenciado totalmente pelo JS, porém a parte do formulário não é gerenciada diretamente pelo JS. Gostaria que você explicase essa lógica para navgegar no formulário, identificar os cards e responder o mesmo.
+
         """
 
         page.wait_for_timeout(5000)
