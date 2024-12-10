@@ -62,6 +62,12 @@ def run():
                 text_atual = 0 # Identificar o texto atual e facilitar a especificação dos elementos dentro dela
                 numero_de_card_verificado = 0 # Será para ajudar na verificação final
                 numero_questao_respondido = 0 # Número de questões respondidas
+                questao_radios = 0 # Essas variaveis vão servir para ajudar a contar e a entender quais questões aparecem mais
+                questao_checkbox = 0 # Essas variaveis vão servir para ajudar a contar e a entender quais questões aparecem mais
+                questao_dragable = 0 # Essas variaveis vão servir para ajudar a contar e a entender quais questões aparecem mais
+                questao_order = 0 # Essas variaveis vão servir para ajudar a contar e a entender quais questões aparecem mais
+                questao_select = 0 # Essas variaveis vão servir para ajudar a contar e a entender quais questões aparecem mais
+                questao_textarea = 0 # Essas variaveis vão servir para ajudar a contar e a entender quais questões aparecem mais
                 
                 ## DESCOBRIR QUANTAS VERIFICAÇÕES TEM QUE FAZER
                 numero_de_card = número de div.css-xz389d # A div.css-xz389d são cada card
@@ -104,49 +110,75 @@ def run():
                                         Pega a resposta do ChatGPT que vai vim em formato JSON e armazene em outro arquivo JSON
                                     # Sistema/Função para responder respostas do tipo Radios
                                         Pegue a resposta do arquivo JSON
-                                        Procure dentre as :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Essa especificação 'div.MuiRadioGroup-root div.css-t1yck' é o conjunto de alternativas. Aqui a ideia é procurar dentro do card atual no conjunto de alternativas a alternativa que tem o valor igual ao do arquivo JSON com a resposta do ChatGPT
-                                        Click no input.PrivateSwitchBase-input.css-1m9pwf3 que está na :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro da :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Agora é apenas clicar no Input da alternativa
+                                        Procure dentre as div.MuiRadioGroup-root div.css-t1yck que estão dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') uma que o valor seja igual ao ARQUIVO JSON # Essa especificação 'div.MuiRadioGroup-root div.css-t1yck' é o conjunto de alternativas. Aqui a ideia é procurar dentro do card atual no conjunto de alternativas a alternativa que tem o valor igual ao do arquivo JSON com a resposta do ChatGPT
+                                        Click no input.PrivateSwitchBase-input.css-1m9pwf3 que está na div.MuiRadioGroup-root div.css-t1yck que esá dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Agora é apenas clicar no Input da alternativa
                                     numero_questao_respondido += 1 # Vamos adicionar mais 1 ao número de questões respondidas
+                                    questao_radios += 1
                                     Para e passa para a próxima pergunta
                                 *} SENÃO SE (dentro da :nth:match('div.MuiCard-root.css-xz389d, $') EXISTI span.MuiCheckbox-root.css-14bgux8) {
                                     # Se existir então é uma questão de tipo Checkbox
                                     numero_de_card_verificado += 1
                                     Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é :nth-match('div.MuiCard-root.css-xz389d, questao_atual') # Todos esses P é o Título da questão e as alternativas
-                                    Armazene todo esse conteúdo no JSON # Armazenar todo esse conteúdo em um arquivo JSON para podemos transferir esses dados da questão atual para a página do ChatGPT
+                                    Armazene todo esse conteúdo no JSON
                                     # Sistema/Função para procurar respostas
                                         Vá para a página do ChatGPT (Abra uma nova guia, Entre em https://chatgpt.com/)
                                         Pega todo o conteúdo do JSON e coloca no ChatGPT
                                         Pega a resposta do ChatGPT que vai vim em formato JSON e armazene em outro arquivo JSON
                                     # Sistema/Função para responder respostas do tipo Radios
                                         Pegue a resposta do arquivo JSON
-                                        Procure dentre as :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Essa especificação 'div.MuiRadioGroup-root div.css-t1yck' é o conjunto de alternativas. Aqui a ideia é procurar dentro do card atual no conjunto de alternativas a alternativa que tem o valor igual ao do arquivo JSON com a resposta do ChatGPT
-                                        Click no input.PrivateSwitchBase-input.css-1m9pwf3 que está na :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro da :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Agora é apenas clicar no Input da alternativa
+                                        Crie um array com as alternativas corretas (Idependente se for apenas 1 ou mais) # Como é do tipo checkbox é possível ter mais de uma alternativa certa
+                                        Itere sobre os valores e click na ordem correta # Iteraremos nesse array para por as respostas corretas
+                                            Procure dentre as div.MuiCheckbox-root div.css-t1yck que está dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON
+                                            Click no input.PrivateSwitchBase-input.css-1m9pwf3 que está na div.MuiCheckbox-root div.css-t1yck que está dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON
+                                    numero_questao_respondido += 1 # Vamos adicionar mais 1 ao número de questões respondidas
+                                    questao_checkbox += 1
+                                    Para e passa para a próxima pergunta
+                                TODO} SENÃO SE (dentro da :nth:match('div.MuiCard-root.css-xz389d, $') EXISTI span.MuiCheckbox-root.css-14bgux8) {
+                                    # Se existir então é uma questão de tipo Dragable
+                                    numero_de_card_verificado += 1
+
+                                    ? LÓGICA:
+                                    ? ====================================================================================================================================
+                                    ? Pegar a quantidade total da div a serem movidas/ordenadas
+                                    ? Identificar o "index: $' de cada um deles
+                                    ? Fazer uma ou 2 funções (1 para subir e outra para descer) para calcular para cada um deles quantas vezes eles tem que subir e descer
+                                    ? Precionar aquantidade de vezes ideial para cada botão com base na resposta de cada função
+
+                                    Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é :nth-match('div.MuiCard-root.css-xz389d, questao_atual') # Todos esses P é o Título da questão e as alternativas
+                                    Armazene todo esse conteúdo no JSON
+                                    # Sistema/Função para procurar respostas
+                                        Vá para a página do ChatGPT (Abra uma nova guia, Entre em https://chatgpt.com/)
+                                        Pega todo o conteúdo do JSON e coloca no ChatGPT
+                                        Pega a resposta do ChatGPT que vai vim em formato JSON e armazene em outro arquivo JSON
+                                    # Sistema/Função para responder respostas do tipo Radios
+                                        Pegue a resposta do arquivo JSON
+                                        Crie um array com as alternativas corretas (Idependente se for apenas 1 ou mais) # Como é do tipo checkbox é possível ter mais de uma alternativa certa, portanto acho legal a ideia de deixar as respostas dentro de um array e depois só procurar os valores dentre as alternativas
+                                        Itere sobre os valores e click na ordem correta
+                                            Procure dentre as :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON
+                                            Click no input.PrivateSwitchBase-input.css-1m9pwf3 que está na :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro da :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON
+                                            # Faça isso para toda a ordem
                                     numero_questao_respondido += 1 # Vamos adicionar mais 1 ao número de questões respondidas
                                     Para e passa para a próxima pergunta
-                                TODO } SENÃO SE (dentro da :nth:match('div.MuiCard-root.css-xz389d, $') EXISTI span.MuiCheckbox-root.css-14bgux8) {
-                                TODO    # Se existir então é uma questão de tipo DRAGABLE
-                                TODO    numero_de_card_verificado += 1
-                                TODO    Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é :nth-match('div.MuiCard-root.css-xz389d, questao_atual') # Todos esses P é o Título da questão e as alternativas
-                                TODO    Armazene todo esse conteúdo no JSON # Armazenar todo esse conteúdo em um arquivo JSON para podemos transferir esses dados da questão atual para a página do ChatGPT
-                                TODO    # Sistema/Função para procurar respostas
-                                TODO        Vá para a página do ChatGPT (Abra uma nova guia, Entre em https://chatgpt.com/)
-                                TODO        Pega todo o conteúdo do JSON e coloca no ChatGPT
-                                TODO        Pega a resposta do ChatGPT que vai vim em formato JSON e armazene em outro arquivo JSON
-                                TODO    # Sistema/Função para responder respostas do tipo Radios
-                                TODO        Pegue a resposta do arquivo JSON
-                                TODO        Procure dentre as :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Essa especificação 'div.MuiRadioGroup-root div.css-t1yck' é o conjunto de alternativas. Aqui a ideia é procurar dentro do card atual no conjunto de alternativas a alternativa que tem o valor igual ao do arquivo JSON com a resposta do ChatGPT
-                                TODO        Click no input.PrivateSwitchBase-input.css-1m9pwf3 que está na :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro da :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Agora é apenas clicar no Input da alternativa
-                                TODO    numero_questao_respondido += 1 # Vamos adicionar mais 1 ao número de questões respondidas
-                                TODO Responder # Lógica para Responder
-                                TODO }SENÃO SE (dentro da :nth:match('div.MuiCard-root.css-xz389d, $') EXISTI span.MuiCheckbox-root.css-14bgux8) {
-                                !   # Aqui o Type dele é "Select"
-                                !   Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é div.MuiCard-root.css-xz389d, $ # Esse $ é a questao_atual
-                                !   Armazene todo esse conteúdo no JSON
-                                !   Vá para a página do ChatGPT (Abra uma nova guia, Entre em https://chatgpt.com/)
-                                !   Pega todo o conteúdo do JSON e coloca no ChatGPT
-                                !   Pega a resposta do ChatGPT que vai vim em formato JSON
-                                TODO Responder # Lógica para Responder
-                                } SENÃO SE (dentro da :nth-match('div.MuiCard-root.css-xz389d, questao_atual') EXISTI span.MuiRadio-root.css-1sgsc5r) {
+                                *} SENÃO SE (dentro da :nth:match('div.MuiCard-root.css-xz389d, $') EXISTI div.MuiChip-Default.css-16x8ql9) {
+                                    # Se existir então é uma questão de tipo Order
+                                    numero_de_card_verificado += 1
+                                    Pega o conteúdo de todos os P e span.MuiChip-label.css-9iedg7 dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é :nth-match('div.MuiCard-root.css-xz389d, questao_atual') # Todos esses P é o Título da questão e os span.MuiChip-label.css-9iedg7 são as opções a serem ordenadas
+                                    Armazene todo esse conteúdo no JSON
+                                    # Sistema/Função para procurar respostas
+                                        Vá para a página do ChatGPT (Abra uma nova guia, Entre em https://chatgpt.com/)
+                                        Pega todo o conteúdo do JSON e coloca no ChatGPT
+                                        Pega a resposta do ChatGPT que vai vim em formato JSON e armazene em outro arquivo JSON
+                                    # Sistema/Função para responder respostas do tipo Radios
+                                        Pegue a resposta do arquivo JSON
+                                        Crie um array para armazenar os valores na ordem correta # Como é do tipo order (Ordenar) precisamos ter esse valores na ordem correta
+                                        Itere sobre os valores e click na ordem correta
+                                            Procure dentre as div.MuiButtonBase-root.css-16x8ql9 span.MuiChip-label.css-9iedg7 que está dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON
+                                            Click no span.MuiChip-label.css-9iedg7 que está na div.MuiButtonBase-root.css-16x8ql9 que está dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON
+                                            # Faça isso para toda a ordem
+                                    numero_questao_respondido += 1 # Vamos adicionar mais 1 ao número de questões respondidas
+                                    questao_order += 1
+                                    Para e passa para a próxima pergunta
+                                TODO} SENÃO SE (dentro da :nth-match('div.MuiCard-root.css-xz389d, questao_atual') EXISTI span.MuiRadio-root.css-1sgsc5r) {
                                     # Se existir então é uma questão de tipo Select
                                     numero_de_card_verificado += 1
                                     Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é :nth-match('div.MuiCard-root.css-xz389d, questao_atual') # Todos esses P é o Título da questão e as alternativas
@@ -157,31 +189,33 @@ def run():
                                         Pega a resposta do ChatGPT que vai vim em formato JSON e armazene em outro arquivo JSON
                                     # Sistema/Função para responder respostas do tipo Radios
                                         Pegue a resposta do arquivo JSON
-                                        Procure dentre as :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Essa especificação 'div.MuiRadioGroup-root div.css-t1yck' é o conjunto de alternativas. Aqui a ideia é procurar dentro do card atual no conjunto de alternativas a alternativa que tem o valor igual ao do arquivo JSON com a resposta do ChatGPT
-                                        Click no input.PrivateSwitchBase-input.css-1m9pwf3 que está na :nth-match('div.MuiRadioGroup-root div.css-t1yck, questao_atual') dentro da :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Agora é apenas clicar no Input da alternativa
+                                        Procure dentre as div.MuiRadioGroup-root div.css-t1yck que estão dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') uma que o valor seja igual ao ARQUIVO JSON # Essa especificação 'div.MuiRadioGroup-root div.css-t1yck' é o conjunto de alternativas. Aqui a ideia é procurar dentro do card atual no conjunto de alternativas a alternativa que tem o valor igual ao do arquivo JSON com a resposta do ChatGPT
+                                        Click no input.PrivateSwitchBase-input.css-1m9pwf3 que está na div.MuiRadioGroup-root div.css-t1yck que esá dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') cujo valor seja igual ao ARQUIVO JSON # Agora é apenas clicar no Input da alternativa
                                     numero_questao_respondido += 1 # Vamos adicionar mais 1 ao número de questões respondidas
+                                    questao_select += 1
                                     Para e passa para a próxima pergunta
                                 *} SENÃO SE (dentro da :nth:match('div.MuiCard-root.css-xz389d, $') EXISTI div.MuiTextField-root.css-feqhe6) {
                                     # Se existir então é uma questão de tipo Textarea
                                     numero_de_card_verificado += 1
                                     Pega o conteúdo de todos os P dentro de todas as div.MuiBox-root.css-kmkory que estão dentro do pai que é :nth-match('div.MuiCard-root.css-xz389d, questao_atual') # Todos esses P são o Título da questão
-                                    Armazene todo esse conteúdo no JSON # Armazenar todo esse conteúdo em um arquivo JSON para podemos transferir esses dados da questão atual para a página do ChatGPT
+                                    Armazene todo esse conteúdo no JSON
                                     # Sistema/Função para procurar respostas
                                         Vá para a página do ChatGPT (Abra uma nova guia, Entre em https://chatgpt.com/)
                                         Pega todo o conteúdo do JSON e coloca no ChatGPT
                                         Pega a resposta do ChatGPT que vai vim em formato JSON e armazene em outro arquivo JSON
                                     # Sistema/Função para responder respostas do tipo Radios
                                         Pegue a resposta do arquivo JSON
-                                        Click no textarea.MuiInputBase-inputMultiline.css-13pivat que está na :nth-match('div.MuiInput-root, questao_atual') dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') e depois dar um .fill() com o valor do JSON # Agora é apenas clicar no Input da alternativa
+                                        Click no textarea.MuiInputBase-inputMultiline.css-13pivat que está no div.MuiInput-root que está dentro do pai :nth-match('div.MuiCard-root.css-xz389d, questao_atual') e depois da um .fill() com o valor do JSON # Agora é apenas clicar no textarea e dar um fill (completar/encher) com a resposta do ChatGPT
                                     numero_questao_respondido += 1
+                                    textarea += 1
                                     Para e passa para a próxima pergunta
                                 }
                             }
                         }
                         VERIFICAR LIÇÃO SE AS ALTERNATIVAS FOR APENAS IMAGENS
-                            PEDIR AO USUÁRIO PARA QUERESOLVA ESSA QUESTÃO
+                            PEDIR AO USUÁRIO PARA QUERESOLVA ESSA QUESTÃO E DIGA SE JÁ RESPONDEU PARA PASSAR PARA PRÓXIMA
                         PEGA O TÍTULO DA QUESTÃO E AS ALTERNATIVAS DEPOIS ARMARZENA-LÁS NO JSON
-                        PEGA O JSON COM A PERGUNTA E AS ALTERNATIVAS DA $ E PASSE PARA ChatGPT PARA QUE RESOLVA E RETORNE A RESPOSTA(s)
+                        PEGA O JSON COM A PERGUNTA E AS ALTERNATIVAS DA questao_atual E PASSE PARA ChatGPT PARA QUE RESOLVA E RETORNE A RESPOSTA(s)
                         PEGA AS RESPOSTAS DESSE JSON E COLOUQE NA ALTERNATIVA CORRETA
                     }
                 } ENQUANTO (numero_de_card > numero_de_card_verificado)
