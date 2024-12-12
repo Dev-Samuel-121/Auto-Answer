@@ -54,7 +54,10 @@ def run():
                 card_atual = 1 # Identificar o card atual e facilitar a especificação dos elementos dentro dela
                 numero_de_card_verificado = 0 # Será para ajudar na verificação final
                 numero_questao_respondido = 0 # Número de questões respondidas
-                questao_radios = 0 # Essas variaveis vão servir para ajudar a contar e a entender quais questões aparecem mais
+                img_gif_video = 0 # Essas variaveis vão servir para ajudar a contar e a entender quais questões aparecem mais
+                questao_texto_img_gif_video = 0
+                questao_texto = 0
+                questao_radios = 0
                 questao_checkbox = 0
                 questao_dragable = 0
                 questao_order = 0
@@ -66,48 +69,58 @@ def run():
                 
                 # JSON
                 atividade = {
-                    t
+                    contexto: 
                 }
-                respostas = {}
+                respostas = {
+                    contexto: 
+                }
 
                 FACA { # Vamos fazer tudo isso enquanto o número de numero_de_card for maior que o numero_de_card_verificado ou seja ainda faltam cards para verificar
-                    SE (dentro da :nth-match('div.css-xz389d, card_atual') EXISTI a div.css-1mi3tt8 OU EXISTI a div.ytp-cued-thumbnail-overlay OU EXISTI a div.MuiBox-root.css-1ierx79 { # Esse numero_de_card_verificado ajuda a saber qual é o card atual ou o card que estamos verificando
+                    # Aqui vamos zerar as variaveis
+                    head_texto = ''
+                    head_quetao = ''
+                    alternativas_quetao = []
+                    
+                    SE (dentro da :nth-match('div.css-xz389d, card_atual') EXISTI a div.css-1mi3tt8 OU EXISTI a div.ytp-cued-thumbnail-overlay OU EXISTI a img com o atributo style="max-width: 100%;" { # Esse numero_de_card_verificado ajuda a saber qual é o card atual ou o card que estamos verificando
                         # Se existir então temos aqui um PDF ou VÍDEO ou GIF Agora vamos verificar se tem alguma conteúdo que possa ser importante nós pegar
                         SE (dentro da :nth-match('div.css-xz389d, card_atual') EXISTI h6.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j) {
-                            # Se tiver um deles vamos verificar se EXISTI h6.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j # o que significa que temos um breve texto sobre o assunto
-                            numero_de_card_verificado += 1 # Para saber quantos cards já foram verificados
+                            # Se tiver um deles vamos verificar se EXISTI h6.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j o que significa que temos um breve texto sobre o assunto
                             head_texto = Todo o conteúdo do :nth-match('h6.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j, text_atual') pegue todo e qualquer forma de Texto
-                            # Armazene todo esse conteúdo no JSON
+                            # Armazene todo esse conteúdo no dicionário para depois passar para o JSON
                             atividade = {
                                 texto_$ = { # O $ é o valor da texto_atual
-                                    texto = head_texto
+                                    texto: f'''head_texto''' # Troque ''' por aspas duplas
                                 }
                             }
+                            questao_texto_img_gif_video += 1
                             text_atual += 1 # Para saber para qual texto vamos
                             card_atual += 1 # Para saber para qual card vamos
+                            numero_de_card_verificado += 1 # Para saber quantos cards já foram verificados
                             Passa para a próxima div.css-xz389d # Em outras palavras passar para o próximo card
                         } SENÃO {
                             # Se não EXISTI h6.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j então provavelmente aqui tem só um PDF ou VÍDEO ou GIF
+                            img_gif_video += 1
                             numero_de_card_verificado += 1 # Para saber quantos cards já foram verificados
                             Passa para a próxima div.css-xz389d
                         }
                     } SENÃO {
                         SE (dentro da :nth-match('div.css-xz389d, card_atual') EXISTI h6.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j) {
                             # Se não tiver nenhum PDF, VÍDEO ou GIF vamos verificar se é um card só de texto
-                            numero_de_card_verificado += 1
                             head_texto = Todo o conteúdo do :nth-match('h6.MuiTypography-root.MuiTypography-subtitle2.css-qpwa0j, text_atual') pegue todo e qualquer forma de Texto
                             # Armazene todo esse conteúdo no JSON
                             atividade = {
                                 texto_$ = { # O $ é o valor da texto_atual
-                                    texto = head_texto
+                                    texto: f'''head_texto''' # Troque ''' por aspas duplas
                                 }
                             }
                             text_atual += 1
                             card_atual += 1
+                            questao_texto += 1
+                            numero_de_card_verificado += 1
                             Passa para a próxima div.css-xz389d
                         } SENÃO {
                             # Se não é um card que contem TEXTO, PDF, VÍDEO ou GIF então só pode ser uma questão
-                            SE (dentro da :nth:match('div.css-xz389d, card_atual') EXISTI div.css-nlzma4) {
+                            SE (dentro da :nth-match('div.css-xz389d, card_atual') EXISTI div.css-nlzma4) {
                                 # Se tiver essa div então sabemos que é uma questão então agora verificamos o tipo de questão (Radios, Checkbox, etc)
                                 # Sistema/Função para identificar tipo de pergunta
                                 *SE (dentro da :nth-match('div.MuiCard-root.css-xz389d, card_atual') EXISTI span.MuiRadio-root.css-1sgsc5r) {
