@@ -1,14 +1,1 @@
-{
-    "U1": {
-        "ra": 110065918,
-        "dg": 3,
-        "uf": "sp",
-        "password": "Bp110065#"
-    },
-    "U2": {
-        "ra": 110065923,
-        "dg": 7,
-        "uf": "sp",
-        "password": "Bp110065#"
-    }
-}
+{"U1":{"ra":"110065918","dg":"3","uf":"sp","email":"00001100659183sp@al.educacao.sp.gov.br","password":"Bp110065#"},"U2":{"ra":"110065923","dg":"7","uf":"sp","email":"00001100659237sp@al.educacao.sp.gov.br","password":"Bp110065#"}}

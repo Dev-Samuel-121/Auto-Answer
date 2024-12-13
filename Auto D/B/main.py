@@ -1,6 +1,5 @@
 from playwright.sync_api import sync_playwright
 
-
 def login_estudante(page, ra, dg, uf, ps):
     """Realiza o login com as credenciais fornecidas."""
     page.locator('div#access-student').click()
@@ -122,7 +121,7 @@ def clicar_atividade(page, seletor_atividade):
 def run(ra, dg, uf, ps):
     """Função principal para executar o fluxo do bot."""
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=False, slow_mo=1000)
         page = browser.new_page()
         page.goto("https://cmspweb.ip.tv/login")
         
