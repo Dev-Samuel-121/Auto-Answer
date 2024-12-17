@@ -11,9 +11,9 @@ page.locator('button[data-testid="botao-login-sed"]').click()
 page.locator(':nth-match(.css-1frrzr1, 1)').fill("110065923")
 page.locator(':nth-match(.css-1frrzr1, 2)').fill("7")
 page.locator('.css-r1nef8').click()
-page.locator(f'li.css-1ep6xdl[data-value="SP"]').click()
+page.locator(f'li.css-4dqmvd[data-value="SP"]').click()
 page.locator('.css-scvshb').fill("Bp110065#")
-page.locator('.css-56yhrg').click()
+page.locator('button#botao-login-sed').click()
 
 """
 
@@ -47,7 +47,7 @@ class Sala_Futuro():
         page.locator(':nth-match(.css-1frrzr1, 1)').fill(user['ra'])
         page.locator(':nth-match(.css-1frrzr1, 2)').fill(user['dg'])
         page.locator('.css-r1nef8').click()
-        page.locator(f'li.css-1ep6xdl[data-value="{str(user['uf']).upper()}"]').click()
+        page.locator(f'li.css-4dqmvd[data-value="{str(user['uf']).upper()}"]').click()
         page.locator('.css-scvshb').fill(user['password'])
         page.locator('.css-56yhrg').click()
 
@@ -141,6 +141,30 @@ class Sala_Futuro():
         except Exception as e:
             print(f'ERRO NA VERIFICAÇÃO DE NOVOS CARDS: {e}')
 
+    def fazer(self):
+        pass
+
+    def rascunho(self):
+        text = "Rascunho"
+        pass
+
+    def correcao(self):
+        pass
+
+    def revisar(self):
+        pass
+
+    def concluido(self):
+        text = "Concluída"
+        pass
+
+    def expirado(self):
+        text = "Expirada"
+        pass
+
+    def pendente(self):
+        pass
+
     def info_card(self, page, numero_card):
         try: 
             materia = page.text_content(f':nth-match(.css-15734jk, {numero_card})') # MATERIA DA ATIVIDADE.
@@ -167,7 +191,6 @@ class Sala_Futuro():
                 "ultima_atualizacao":str(ultima_atualizacao),
                 "data_entrega":str(data_entrega)
             }
-            
             print(info_atividade)
             print('-'*50)
             # json.create(path, info_atividade)
@@ -175,11 +198,42 @@ class Sala_Futuro():
         except Exception as e:
             print(f'ERRO NA COLETA DE INFORMAÇÕES DO CARD: {e}')
 
+    def realizando_atividade(self, page):
+        """
+        * QUESTÃO
+        div.css-b200pa - CARD/CONTAINER DA QUESTÃO
+        div.css-1a4wlpz - TEXTO DA QUESTÃO
+        div.css-1p78i1z - TEXTO DA ALTERNATIVA
+        input.css-1m9pwf3 - BOTÃO DA ALTERNATIVA (RADIO, CHECKBOX)
+        textarea.css-qgefwl - CAMPO DE RESPOSTA DA ALTERNATIVA (TEXTAREA)
+
+        * BOTÕES DA PAGINA
+        button.css-fm81so - BOTÃO VOLTAR
+        button.css-1wjnhbh - BOTÃO SALVAR RASCUNHO
+        button[data-testid="botao-finalizar"] - BOTÃO FINALIZAR
+        """
+
+    def realizando_prova(self, page):
+        """
+        * MAPA/MENU SUSPENSO
+        div[data-testid="container-mapa-botoes"] - MAPA DAS QUESTÕES
+        button[data-testid="single"] - CAMINHO DAS QUESTÕES[1, 2, 3, 4, 5, ...]
+        :nth-match(div.css-8atqhb, 4) - TITULO DA MATERIA
+        :nth-match(div.css-8atqhb, 5) - TITULO DA PERGUNTA E TITULO
+        div.css-1x4ovfg - CONTEINER DA ALTERNATIVA
+        div.css-1p78i1z - TEXTO DA ALTERNATIVA
+        input[name="question-choice"] - BOTÃO DA ALTERNATIVA
+        
+        * BOTÕES DA PAGINA
+        button.css-11iafso - BOTÃO PARA IR PARA A PERGUNTA ANTERIOR
+        button.css-1y5nd6d - BOTÃO PARA IR PARA A PROXIMA PERGUNTA
+        button.css-fm81so - BOTÃO PARA VOLTAR/SAIR
+        """
+
     def speak(self, page):
         page.locator(":nth-match(.css-w2vw1p, 5)").highlight()
 
     def leia_sp(self, page):
-        page.locator(":nth-match(.css-w2vw1p, 8)").highlight() # ACESSAR O LEIA SP.
         page.locator(":nth-match(.css-w2vw1p, 8)").highlight() # ACESSAR O LEIA SP.
 
     def khan_academy(self, page):

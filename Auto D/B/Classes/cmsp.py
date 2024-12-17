@@ -1,10 +1,10 @@
 from playwright.sync_api import sync_playwright
-import Classes.FileJson as Json
-import Classes.khan_academy as KhanAcademy
-import Classes.leia_sp as LeiaSP
-import Classes.me_salva as MeSalva
-import Classes.provas_atividades as ProvasAtividades
-import Classes.speak as Speak
+import FileJson as Json
+import khan_academy as KhanAcademy
+import leia_sp as LeiaSP
+import me_salva as MeSalva
+import provas_atividades as ProvasAtividades
+import speak as Speak
 
 """
 OBJETIVOS:
@@ -17,12 +17,12 @@ class CMSP():
         self.page = "https://cmspweb.ip.tv/"
         self.user = user
         self.plataformas = plataformas
-        self.engine(self.user, self.page, self.plataformas)
+        self.engine(self.user, self.page, self.plataformas, 500)
 
-    def engine(self, user, page, plataformas):
+    def engine(self, user, page, plataformas, reaction=0):
         try:
             with sync_playwright() as program:
-                browser = program.chromium.launch(headless=False, slow_mo=500)
+                browser = program.chromium.launch(headless=False, slow_mo=reaction)
                 page = browser.new_page()
                 page.goto(self.page)
                 self.entrada(user, page)
