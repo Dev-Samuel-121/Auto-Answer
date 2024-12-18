@@ -9,3 +9,6 @@ Converte um ***json*** (`str`, `bytes`, `bytearray`), para um ***dicionario***(`
 ___
 ### CONVERTER PYTHON PARA JSON
 Converte um ***dicionario***(`dict`), para um ***json***(`str`).
+___
+### MODIFICAR JSON
+        Modifica um json já criado, adicionado e/ou removendo item.
