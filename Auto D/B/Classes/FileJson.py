@@ -48,7 +48,7 @@ class FileJson:
         try:
             return json.dumps(content, skipkeys=True, indent=None, separators=(',',':'))
         except Exception as e:
-            print(e)
+            print(f'ERRO NA CONVERÇÃO DE PYTHON PARA JSON: {e}')
     
     def json_to_python(self, content):
         """### CONVERTER JSON PARA PYTHON
@@ -56,4 +56,18 @@ class FileJson:
         try:
             return json.loads(content)
         except Exception as e:
-            print(e)
+            print(f'ERRO NA CONVERÇÃO DE JSON PARA PYTHON: {e}')
+    
+    def modificar_json(self, file_name, add_content, rm_content,  path=""):
+        """### MODIFICAR JSON
+        Modifica um json já criado, adicionado e/ou removendo item."""
+        try:
+            content = self.read(file_name, path)
+            content.update(add_content)
+
+            for item in list(rm_content):
+                del content[item]
+
+            self.create(file_name, content, path)
+        except Exception as e:
+            print(f'ERRO NA MODIFICAÇÃO DO JSON: {e}')
