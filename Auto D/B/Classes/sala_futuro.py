@@ -1,7 +1,10 @@
 import os
 import FileJson as Json
 from playwright.sync_api import sync_playwright
+
 """
+* ENTRADA EXPRESSA
+
 from playwright.sync_api import sync_playwright
 program = sync_playwright().start()
 browser = program.chromium.launch(headless=False)
@@ -54,7 +57,6 @@ class Sala_Futuro():
     def verificacao_inicial(self, page):
         tarefas = self.atividades_pendentes(page)
         # VERIFICAR O NÚMERO DE FALTAS;
-        pass
     
     def atividades_pendentes(self, page):
         try:
@@ -166,6 +168,10 @@ class Sala_Futuro():
         pass
 
     def info_card(self, page, numero_card):
+        """
+        * AFAZERES:
+        - TIRAR OS CARACTERES INVÁLIDOS
+        """
         try: 
             materia = page.text_content(f':nth-match(.css-15734jk, {numero_card})') # MATERIA DA ATIVIDADE.
             status = page.text_content(f':nth-match(p[data-testid="status-cartao-tarefa"], {numero_card})') # STATUS DA ATIVIDADE.
@@ -200,6 +206,9 @@ class Sala_Futuro():
 
     def realizando_atividade(self, page):
         """
+        ! ESTÁ FUNÇÃO FOI SUSPENSA PELO FATO DE NÃO HOUVER ATIVIDADES PARA FAZER.
+        """
+        """
         * QUESTÃO
         div.css-b200pa - CARD/CONTAINER DA QUESTÃO
         div.css-1a4wlpz - TEXTO DA QUESTÃO
@@ -213,6 +222,40 @@ class Sala_Futuro():
         button[data-testid="botao-finalizar"] - BOTÃO FINALIZAR
         """
 
+        """
+        * LÓGICA
+        - PEGAR INFORMAÇÕES
+            - PEGAR O TEXTO DA PERGUNTA
+            - PEGAR O TITULO DA PERGUNTA
+            - PEGAR O TEXTO DA ALTERNATIVA
+            - PEGAR O TIPO DA ALTERNATIVA        
+            - CRIAR JSON
+                {
+                    "texto":"",
+                    "pergunta":"",
+                    "alternativa":[("TEXTO","POSICAO", "TIPO")],
+                    "resposta":["TEXTO_ALTERNATIVA"],
+                }
+            - PASSAR PARA A PROXIMA PERGUNTA
+        """
+        
+        """
+        * PASSO A PASSO
+        - CONTAR A QUANTIDADE DE QUESTÕES
+        - PEGAR O TEXTO DA PERGUNTA
+        - PEGAR O TITULO DA PERGUNTA
+        - PEGAR O TEXTO DA ALTERNATIVA
+        - PEGAR O TIPO DA ALTERNATIVA        
+        - CRIAR JSON COM O NÚMERO DA QUESTÃO (Q1,Q2,Q3,...)
+            {
+                "texto":"",
+                "pergunta":"",
+                "alternativa":[("TEXTO","POSICAO", "TIPO")],
+                "resposta":["TEXTO_ALTERNATIVA"],
+            }
+        """
+
+
     def realizando_prova(self, page):
         """
         * MAPA/MENU SUSPENSO
@@ -224,11 +267,47 @@ class Sala_Futuro():
         div.css-1p78i1z - TEXTO DA ALTERNATIVA
         input[name="question-choice"] - BOTÃO DA ALTERNATIVA
         
+        page.locator(":nth-match(div.css-8atqhb, 5)").highlight()
+        
         * BOTÕES DA PAGINA
         button.css-11iafso - BOTÃO PARA IR PARA A PERGUNTA ANTERIOR
         button.css-1y5nd6d - BOTÃO PARA IR PARA A PROXIMA PERGUNTA
         button.css-fm81so - BOTÃO PARA VOLTAR/SAIR
         """
+
+        """
+        * LÓGICA
+        - PEGAR INFORMAÇÕES
+            - CONTAR A QUANTIDADE DE QUESTÕES
+            - PEGAR O TEXTO DA PERGUNTA
+            - PEGAR O TITULO DA PERGUNTA
+            - PEGAR O TEXTO DA ALTERNATIVA
+            - PEGAR O TIPO DA ALTERNATIVA
+            - CRIAR JSON
+                {
+                    "texto":"",
+                    "pergunta":"",
+                    "alternativa":[("TEXTO","POSICAO", "TIPO")],
+                    "resposta":["TEXTO_ALTERNATIVA"],
+                }
+        """
+
+        """
+        * PASSO A PASSO
+        - CONTAR A QUANTIDADE DE QUESTÕES
+        - PEGAR O TEXTO DA PERGUNTA
+        - PEGAR O TITULO DA PERGUNTA
+        - PEGAR O TEXTO DA ALTERNATIVA
+        - PEGAR O TIPO DA ALTERNATIVA        
+        - CRIAR JSON COM O NÚMERO DA QUESTÃO (Q1,Q2,Q3,...)
+            {
+                "texto":"",
+                "pergunta":"",
+                "alternativa":[("TEXTO","POSICAO", "TIPO")],
+                "resposta":["TEXTO_ALTERNATIVA"],
+            }
+        """
+
 
     def speak(self, page):
         page.locator(":nth-match(.css-w2vw1p, 5)").highlight()
