@@ -204,7 +204,7 @@ class Sala_Futuro():
         except Exception as e:
             print(f'ERRO NA COLETA DE INFORMAÇÕES DO CARD: {e}')
 
-    def realizando_atividade(self, page):
+    def realizando_atividade(self, page, nm):
         """
         ! ESTÁ FUNÇÃO FOI SUSPENSA PELO FATO DE NÃO HOUVER ATIVIDADES PARA FAZER.
         """
@@ -220,6 +220,59 @@ class Sala_Futuro():
         button.css-fm81so - BOTÃO VOLTAR
         button.css-1wjnhbh - BOTÃO SALVAR RASCUNHO
         button[data-testid="botao-finalizar"] - BOTÃO FINALIZAR
+        """
+
+        # CONTAR A QUANTIDADE DE QUESTÕES
+        num_questoes = page.locator('div.css-b200pa').count()
+        for pergunta in range(0, num_questoes):
+            # PEGAR O TEXTO E TITULO DA PERGUNTA
+            texto = ""
+            pergunta = page.locator(f':nth-match(div.css-1a4wlpz, {pergunta})').text_content()
+            alternativas = []
+            # * MELHORAR A FORMA DE PEGAR AS ALTERNATIVAS
+            """
+            PARA CADA 1 QUESTAO, 5 ALTERNATIVA
+            Q1 = 0-5
+            Q2 = 5-10
+            Q3 = 10-15
+            """
+            for i in range(0,(pergunta*5)):
+                texto = page.locator(f':nth-match(div.css-1p78i1z, {i})').text_content()
+                tipo = page.locator(f':nth-match(input.css-1m9pwf3, {i})').get_attribute('type')
+                posicao = i
+                alternativas.append((texto, tipo, posicao))
+            questao = {}
+            questao[f'Q{pergunta}'] = {
+                    "texto":texto,
+                    "pergunta":pergunta,
+                    "alternativa":alternativas,
+                    "resposta":"",
+                }
+            json.create(nm, questao, os.path.join(str(os.getcwd),"PROVAS"))
+
+        # PEGAR O TEXTO, TIPO, E A POSIÇÃO DA ALTERNATIVA
+        
+        """
+        # CONTAR A QUANTIDADE DE QUESTÕES
+        num_perguntas = page.locator('button[data-testid="single"]').count()
+
+        # PEGAR O TEXTO E TITULO DA PERGUNTA
+        pergunta = page.locator(':nth-match(div.css-8atqhb, 4)').text_content()
+        
+        # PEGAR O TEXTO, TIPO, E A POSIÇÃO DA ALTERNATIVA
+        num_alternativas = page.locator('div.css-1p78i1z').count()
+        alternativas = []
+        for alternativa in range(0, num_alternativas):
+            alternativas.append((page.locator(f':nth-match(div.css-8atqhb, {alternativa})').text_content(), page.locator(f':nth-match(div.css-8atqhb, {alternativa})').get_attribute('type'), alternativa))
+
+        for pergunta in range(0, num_perguntas):
+            questao = {}
+            questao[f'Q{pergunta}'] = {
+                    "pergunta":pergunta,
+                    "alternativa":alternativas,
+                    "resposta":"",
+                }
+            json.create(nm, questao, os.path.join(str(os.getcwd),"PROVAS"))
         """
 
         """
@@ -238,7 +291,7 @@ class Sala_Futuro():
                 }
             - PASSAR PARA A PROXIMA PERGUNTA
         """
-        
+
         """
         * PASSO A PASSO
         - CONTAR A QUANTIDADE DE QUESTÕES
@@ -256,7 +309,7 @@ class Sala_Futuro():
         """
 
 
-    def realizando_prova(self, page):
+    def realizando_prova(self, page, nm):
         """
         * MAPA/MENU SUSPENSO
         div[data-testid="container-mapa-botoes"] - MAPA DAS QUESTÕES
@@ -294,12 +347,12 @@ class Sala_Futuro():
 
         """
         * PASSO A PASSO
-        - CONTAR A QUANTIDADE DE QUESTÕES
-        - PEGAR O TEXTO DA PERGUNTA
-        - PEGAR O TITULO DA PERGUNTA
-        - PEGAR O TEXTO DA ALTERNATIVA
-        - PEGAR O TIPO DA ALTERNATIVA        
-        - CRIAR JSON COM O NÚMERO DA QUESTÃO (Q1,Q2,Q3,...)
+        - CONTAR A QUANTIDADE DE QUESTÕES ✔
+        - PEGAR O TEXTO DA PERGUNTA ✔
+        - PEGAR O TITULO DA PERGUNTA ✔
+        - PEGAR O TEXTO DA ALTERNATIVA ✔
+        - PEGAR O TIPO DA ALTERNATIVA ✔
+        - CRIAR JSON COM O NÚMERO DA QUESTÃO (Q1,Q2,Q3,...) ✔
             {
                 "texto":"",
                 "pergunta":"",
@@ -307,6 +360,27 @@ class Sala_Futuro():
                 "resposta":["TEXTO_ALTERNATIVA"],
             }
         """
+
+        # CONTAR A QUANTIDADE DE QUESTÕES
+        num_perguntas = page.locator('button[data-testid="single"]').count()
+
+        # PEGAR O TEXTO E TITULO DA PERGUNTA
+        pergunta = page.locator(':nth-match(div.css-8atqhb, 4)').text_content()
+        
+        # PEGAR O TEXTO, TIPO, E A POSIÇÃO DA ALTERNATIVA
+        num_alternativas = page.locator('div.css-1p78i1z').count()
+        alternativas = []
+        for alternativa in range(0, num_alternativas):
+            alternativas.append((page.locator(f':nth-match(div.css-8atqhb, {alternativa})').text_content(), page.locator(f':nth-match(div.css-8atqhb, {alternativa})').get_attribute('type'), alternativa))
+
+        for pergunta in range(0, num_perguntas):
+            questao = {}
+            questao[f'Q{pergunta}'] = {
+                    "pergunta":pergunta,
+                    "alternativa":alternativas,
+                    "resposta":"",
+                }
+            json.create(nm, questao, os.path.join(str(os.getcwd),"PROVAS"))
 
 
     def speak(self, page):
