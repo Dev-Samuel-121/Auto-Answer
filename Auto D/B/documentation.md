@@ -11,4 +11,4 @@ ___
 Converte um ***dicionario***(`dict`), para um ***json***(`str`).
 ___
 ### MODIFICAR JSON
-        Modifica um json já criado, adicionado e/ou removendo item.
+Modifica um **json** já criado, _adicionado_ e/ou _removendo_ item.
