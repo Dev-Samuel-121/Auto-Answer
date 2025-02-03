@@ -18,6 +18,19 @@ page.locator(f'li.css-4dqmvd[data-value="SP"]').click()
 page.locator('.css-scvshb').fill("Bp110065#")
 page.locator('button#botao-login-sed').click()
 
+from playwright.sync_api import sync_playwright
+program = sync_playwright().start()
+browser = program.chromium.launch(headless=False)
+page = browser.new_page()
+page.goto('https://saladofuturo.educacao.sp.gov.br/')
+page.locator('button[data-testid="botao-login-sed"]').click()
+page.locator(':nth-match(.css-1frrzr1, 1)').fill("110065918")
+page.locator(':nth-match(.css-1frrzr1, 2)').fill("3")
+page.locator('.css-r1nef8').click()
+page.locator(f'li.css-4dqmvd[data-value="SP"]').click()
+page.locator('.css-scvshb').fill("Bp110065#")
+page.locator('button#botao-login-sed').click()
+
 """
 
 class Sala_Futuro():
@@ -44,6 +57,16 @@ class Sala_Futuro():
             self.tarefa_sp(page)
         except Exception as e:
             print(f'ERRO NA ENTRADA: {e}')
+
+    def presenca(self, user, page):
+        """
+        ! EM DESENVOLVIMENTO
+        """
+        with open():
+            pass
+        # td.css-r34m32 - MATERIA
+        # td.css-157ik0h - Nº FALTA
+        # td.css-17tikup - % PRESENÇA
 
     def login(self, user, page):
         page.locator('button[data-testid="botao-login-sed"]').click()
